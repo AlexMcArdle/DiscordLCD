@@ -24,7 +24,7 @@ namespace DiscordLCD
         {
             AsyncContext.Run(() => MainAsync(args));
         }
-        
+
         public static async void MainAsync(string[] args)
         {
             // Initialize the LCD app

@@ -25,7 +25,7 @@ namespace DiscordLCD.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("229746606205829120")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string clientID {
             get {
                 return ((string)(this["clientID"]));
@@ -37,7 +37,7 @@ namespace DiscordLCD.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AKt3xJ2-RCQ2Msgxicte1ER1QFXR-RT9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string clientSecret {
             get {
                 return ((string)(this["clientSecret"]));
@@ -61,7 +61,6 @@ namespace DiscordLCD.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("230144259603431424")]
         public ulong channelID {
             get {
                 return ((ulong)(this["channelID"]));
