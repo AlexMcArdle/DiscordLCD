@@ -27,9 +27,6 @@ namespace DiscordLCD
 
         public static async void MainAsync(string[] args)
         {
-            // Initialize the LCD app
-            LogitechGSDK.LogiLcdInit("DiscordLCD", LogitechGSDK.LOGI_LCD_TYPE_MONO | LogitechGSDK.LOGI_LCD_TYPE_COLOR);
-
             // Might need this stuff later
             var speakers = new List<ulong>();
             Dictionary<ulong, string> connectedUsers = new Dictionary<ulong, string>();
@@ -45,6 +42,10 @@ namespace DiscordLCD
 
             DiscordRpcClient client = new DiscordRpcClient(clientID, "http://127.0.0.1");
             RequestOptions requestOptions = new RequestOptions();
+
+            // Initialize the LCD app
+            LogitechGSDK.LogiLcdInit("DiscordLCD", LogitechGSDK.LOGI_LCD_TYPE_MONO | LogitechGSDK.LOGI_LCD_TYPE_COLOR);
+            UpdateLCD(client, null, null, speakers, connectedUsers);
 
             Console.WriteLine(bearerToken);
             if ((bearerToken == "") || resetKey)
@@ -77,11 +78,18 @@ namespace DiscordLCD
             await client.LoginAsync(TokenType.Bearer, bearerToken, false);
             await client.ConnectAsync();
 
+            var server = await client.GetRpcGuildAsync(140540231567933440);
+            var serverName = server.Name;
+            var channel = await client.GetRpcChannelAsync(channelID);
+            var channelName = channel.Name;
+
             await client.SubscribeChannel(channelID, RpcChannelEvent.SpeakingStart);
             await client.SubscribeChannel(channelID, RpcChannelEvent.SpeakingStop);
             await client.SubscribeChannel(channelID, RpcChannelEvent.VoiceStateCreate);
             await client.SubscribeChannel(channelID, RpcChannelEvent.VoiceStateDelete);
             await client.SubscribeChannel(channelID, RpcChannelEvent.VoiceStateUpdate);
+
+            
             
 // i don't like the color of await warnings
 #pragma warning disable 1998
@@ -90,7 +98,6 @@ namespace DiscordLCD
                 Console.WriteLine("s1: " + s1);
                 Console.WriteLine("s2: " + s2);
                 Console.WriteLine("o1: " + o1);
-                //line2 = s2.ToString();
 
                 if (s2.ToString() == "SPEAKING_START")
                 {
@@ -125,7 +132,7 @@ namespace DiscordLCD
                         Console.WriteLine("User added to connectedUsers. Total: " + connectedUsers.Count);
                     }
                 }
-                UpdateLCD(client, speakers, connectedUsers);
+                UpdateLCD(client, serverName, channelName, speakers, connectedUsers);
             };
             client.Log += async (logMessage) =>
             {
@@ -170,7 +177,7 @@ namespace DiscordLCD
             Console.Read();
         }
 
-        private static void UpdateLCD(DiscordRpcClient client, List<ulong> speakers, Dictionary<ulong, string> connectedUsers)
+        private static void UpdateLCD(DiscordRpcClient client, string serverName, string channelName, List<ulong> speakers, Dictionary<ulong, string> connectedUsers)
         {
             Console.WriteLine("Length: " + speakers.Count);
 
@@ -190,6 +197,8 @@ namespace DiscordLCD
                 }
             }
 
+            line0 = serverName ?? "No server";
+            line1 = channelName ?? "No channel";
             line2 = speakersString;
             line3 = client.ConnectionState.ToString();
 
