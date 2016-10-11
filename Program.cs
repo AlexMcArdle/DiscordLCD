@@ -41,11 +41,13 @@ namespace DiscordLCD
             string clientID = DiscordLCD.Properties.Settings.Default.clientID;
             string clientSecret = DiscordLCD.Properties.Settings.Default.clientSecret;
             string bearerToken = DiscordLCD.Properties.Settings.Default.bearerToken;
+            bool resetKey = DiscordLCD.Properties.Settings.Default.reset;
 
             DiscordRpcClient client = new DiscordRpcClient(clientID, "http://127.0.0.1");
             RequestOptions requestOptions = new RequestOptions();
 
-            if (bearerToken == "")
+            Console.WriteLine(bearerToken);
+            if ((bearerToken == "") || resetKey)
             {
                 // get auth code from Discord client
                 string authcode = await client.AuthorizeAsync(scopes, rpcToken);
