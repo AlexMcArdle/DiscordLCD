@@ -14,6 +14,9 @@
     <Setting Name="channelID" Type="System.UInt64" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="guildID" Type="System.UInt64" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="reset" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
