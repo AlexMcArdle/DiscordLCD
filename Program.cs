@@ -35,6 +35,7 @@ namespace DiscordLCD
 
             // These variables are set using the App.config file
             ulong channelID = DiscordLCD.Properties.Settings.Default.channelID;
+            ulong guildID = DiscordLCD.Properties.Settings.Default.guildID;
             string clientID = DiscordLCD.Properties.Settings.Default.clientID;
             string clientSecret = DiscordLCD.Properties.Settings.Default.clientSecret;
             string bearerToken = DiscordLCD.Properties.Settings.Default.bearerToken;
@@ -78,7 +79,7 @@ namespace DiscordLCD
             await client.LoginAsync(TokenType.Bearer, bearerToken, false);
             await client.ConnectAsync();
 
-            var server = await client.GetRpcGuildAsync(140540231567933440);
+            var server = await client.GetRpcGuildAsync(guildID);
             var serverName = server.Name;
             var channel = await client.GetRpcChannelAsync(channelID);
             var channelName = channel.Name;
