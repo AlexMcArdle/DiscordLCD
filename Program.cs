@@ -49,7 +49,11 @@ namespace DiscordLCD
             UpdateLCD(client, null, null, speakers, connectedUsers);
 
             Console.WriteLine(bearerToken);
-            if ((bearerToken == "") || resetKey)
+            if(resetKey)
+            {
+                DiscordLCD.Properties.Settings.Default.Reset();
+            }
+            if (bearerToken == "")
             {
                 // get auth code from Discord client
                 string authcode = await client.AuthorizeAsync(scopes, rpcToken);
