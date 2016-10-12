@@ -68,9 +68,9 @@ namespace DiscordLCD
                     { "code", authcode },
                     { "redirect_uri", "http://127.0.0.1" }
                 };
-                var stream = await restClient.SendAsync("POST", "oauth2/token", request, requestOptions);
-                stream.Position = 0;
-                var sr = new StreamReader(stream);
+                var restReponse = await restClient.SendAsync("POST", "oauth2/token", request, requestOptions);
+                restReponse.Stream.Position = 0;
+                var sr = new StreamReader(restReponse.Stream);
                 var json = sr.ReadToEnd();
                 Dictionary<string, string> response = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 

@@ -54,14 +54,25 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Discord.Net.Core">
-      <HintPath>..\..\Discord.Net\src\Discord.Net.Rpc\bin\Debug\netstandard1.3\Discord.Net.Core.dll</HintPath>
+    <Reference Include="Discord.Net.Commands, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.Commands.1.0.0-beta2-00423\lib\netstandard1.3\Discord.Net.Commands.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Discord.Net.Rest">
-      <HintPath>..\..\Discord.Net\src\Discord.Net.Rpc\bin\Debug\netstandard1.3\Discord.Net.Rest.dll</HintPath>
+    <Reference Include="Discord.Net.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.Core.1.0.0-beta2-00423\lib\netstandard1.3\Discord.Net.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Discord.Net.Rpc">
-      <HintPath>..\..\Discord.Net\src\Discord.Net.Rpc\bin\Debug\netstandard1.3\Discord.Net.Rpc.dll</HintPath>
+    <Reference Include="Discord.Net.Rest, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.Rest.1.0.0-beta2-00423\lib\netstandard1.3\Discord.Net.Rest.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Discord.Net.Rpc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.Rpc.1.0.0-beta2-00423\lib\netstandard1.3\Discord.Net.Rpc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Discord.Net.WebSocket, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discord.Net.WebSocket.1.0.0-beta2-00423\lib\netstandard1.3\Discord.Net.WebSocket.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.0.1\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
