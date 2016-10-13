@@ -201,6 +201,10 @@ namespace DiscordLCD
                     speakersString += user + " ";
                 }
             }
+            if (speakersString.Length != 0)
+            {
+                speakersString = "🎤" + speakersString;
+            }
 
             line0 = serverName ?? "No server";
             line1 = channelName ?? "No channel";
