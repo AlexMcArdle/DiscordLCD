@@ -35,7 +35,7 @@ namespace DiscordLCD
 
             // These variables are set using the App.config file
             ulong channelID = DiscordLCD.Properties.Settings.Default.channelID;
-            ulong guildID = DiscordLCD.Properties.Settings.Default.guildID;
+            ulong serverID = DiscordLCD.Properties.Settings.Default.guildID;
             string clientID = DiscordLCD.Properties.Settings.Default.clientID;
             string clientSecret = DiscordLCD.Properties.Settings.Default.clientSecret;
             string bearerToken = DiscordLCD.Properties.Settings.Default.bearerToken;
@@ -83,7 +83,7 @@ namespace DiscordLCD
             await client.LoginAsync(TokenType.Bearer, bearerToken, false);
             await client.ConnectAsync();
 
-            var server = await client.GetRpcGuildAsync(guildID);
+            var server = await client.GetRpcGuildAsync(serverID);
             var serverName = server.Name;
             var channel = await client.GetRpcChannelAsync(channelID);
             var channelName = channel.Name;
@@ -104,23 +104,22 @@ namespace DiscordLCD
                 Console.WriteLine("s2: " + s2);
                 Console.WriteLine("o1: " + o1);
 
+                Newtonsoft.Json.Linq.JObject jObject = Newtonsoft.Json.Linq.JObject.Parse(o1.ToString());
+
                 if (s2.ToString() == "SPEAKING_START")
                 {
-                    var speakEvent = JsonConvert.DeserializeObject<Dictionary<String, ulong>>(o1.ToString());
-                    ulong userID = speakEvent["user_id"];
+                    ulong userID = (ulong)jObject["user_id"];
                     Console.WriteLine(userID);
                     if(speakers.IndexOf(userID) == -1)
                     {
                         speakers.Add(userID);
                     }
-                    
                 }
                 if (s2.ToString() == "SPEAKING_STOP")
                 {
-                    var speakEvent = JsonConvert.DeserializeObject<Dictionary<String, ulong>>(o1.ToString());
-                    ulong userID = speakEvent["user_id"];
+                    ulong userID = (ulong)jObject["user_id"];
                     Console.WriteLine(userID);
-                    if (speakers.IndexOf(speakEvent["user_id"]) != -1)
+                    if (speakers.IndexOf(userID) != -1)
                     {
                         speakers.Remove(userID);
                     }
@@ -128,7 +127,6 @@ namespace DiscordLCD
                 }
                 if(s2.ToString() == "VOICE_STATE_UPDATE")
                 {
-                    Newtonsoft.Json.Linq.JObject jObject = Newtonsoft.Json.Linq.JObject.Parse(o1.ToString());
                     string value;
                     if (!connectedUsers.TryGetValue((ulong)jObject["user"]["id"], out value))
                     {
@@ -137,6 +135,19 @@ namespace DiscordLCD
                         Console.WriteLine("User added to connectedUsers. Total: " + connectedUsers.Count);
                     }
                 }
+                if(s2.ToString() == "VOICE_STATE_DELETE")
+                {
+                    if (jObject["user"]["username"].ToString() == client.CurrentUser.Username)
+                    {
+                        speakers = new List<ulong>();
+                    }
+                }
+                if(s2.ToString() == "VOICE_STATE_CREATE")
+                {
+                    //
+                }
+
+                // Refresh the LCD screen
                 UpdateLCD(client, serverName, channelName, speakers, connectedUsers);
             };
             client.Log += async (logMessage) =>
