@@ -9,7 +9,7 @@ Currently supports the monochrome LCDs (can't test RGB)
 - G15 v1 - 160x43 Monochrome
 - G15 v2 - 160x43 Monochrome
 
-Uses [Discord.Net 1.0 beta (dev branch)](https://github.com/RogueException/Discord.Net) & DiscordPTB (Public Test Build)
+Uses [Discord.Net 1.0 beta (dev branch)](https://github.com/RogueException/Discord.Net/tree/dev) & DiscordPTB (Public Test Build)
 
 To use:
 * Create a new application in the [Discord Developer portal](https://discordapp.com/developers/applications/me)
