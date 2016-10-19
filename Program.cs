@@ -10,6 +10,7 @@ using Nito.AsyncEx;
 using Discord;
 using Discord.Rpc;
 using Discord.API;
+using Discord.Rest;
 using Newtonsoft.Json;
 using System.Data;
 using System.Reflection;
@@ -57,7 +58,7 @@ namespace DiscordLCD
             {
                 // get auth code from Discord client
                 string authcode = await client.AuthorizeAsync(scopes, rpcToken);
-
+                
                 // get token using authcode
                 Discord.Net.Rest.DefaultRestClient restClient = new Discord.Net.Rest.DefaultRestClient("https://discordapp.com/api/");
                 IReadOnlyDictionary<string, object> request = new Dictionary<string, object>
@@ -68,7 +69,9 @@ namespace DiscordLCD
                     { "code", authcode },
                     { "redirect_uri", "http://127.0.0.1" }
                 };
-                var restReponse = await restClient.SendAsync("POST", "oauth2/token", request, requestOptions);
+                
+                var cancelToken = new System.Threading.CancellationToken();
+                var restReponse = await restClient.SendAsync("POST", "oauth2/token", request, cancelToken, false);
                 restReponse.Stream.Position = 0;
                 var sr = new StreamReader(restReponse.Stream);
                 var json = sr.ReadToEnd();
