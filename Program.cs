@@ -21,6 +21,8 @@ namespace DiscordLCD
 {
     class Program
     {
+        private static LogitechArx.logiArxCbContext contextCallback;
+
         static void Main(string[] args)
         {
             AsyncContext.Run(() => MainAsync(args));
@@ -36,7 +38,7 @@ namespace DiscordLCD
 
             // These variables are set using the App.config file
             ulong channelID = DiscordLCD.Properties.Settings.Default.channelID;
-            ulong serverID = DiscordLCD.Properties.Settings.Default.guildID;
+            ulong serverID = DiscordLCD.Properties.Settings.Default.serverID;
             string clientID = DiscordLCD.Properties.Settings.Default.clientID;
             string clientSecret = DiscordLCD.Properties.Settings.Default.clientSecret;
             string bearerToken = DiscordLCD.Properties.Settings.Default.bearerToken;
@@ -49,10 +51,14 @@ namespace DiscordLCD
             LogitechGSDK.LogiLcdInit("DiscordLCD", LogitechGSDK.LOGI_LCD_TYPE_MONO | LogitechGSDK.LOGI_LCD_TYPE_COLOR);
             UpdateLCD(client, null, null, speakers, connectedUsers);
 
+            // Initialize ARX
+            InitARX();
+
             Console.WriteLine(bearerToken);
             if(resetKey)
             {
                 DiscordLCD.Properties.Settings.Default.Reset();
+                DiscordLCD.Properties.Settings.Default.Save();
             }
             if (bearerToken == "")
             {
@@ -152,6 +158,9 @@ namespace DiscordLCD
 
                 // Refresh the LCD screen
                 UpdateLCD(client, serverName, channelName, speakers, connectedUsers);
+
+                // Refresh Arx screen
+                UpdateArx(client, serverName, channelName, speakers, connectedUsers);
             };
             client.Log += async (logMessage) =>
             {
@@ -194,6 +203,75 @@ namespace DiscordLCD
 
             // Wait for keypress before closing
             Console.Read();
+        }
+
+        private static void InitARX()
+        {
+            contextCallback.arxCallBack = new LogitechArx.logiArxCB(SDKCallback);
+            contextCallback.arxContext = System.IntPtr.Zero;
+            bool retVal = LogitechArx.LogiArxInit("sdk.sample.test", "C#test", ref contextCallback);
+
+            if (!retVal)
+            {
+                int retCode = LogitechArx.LogiArxGetLastError();
+                Console.WriteLine("arx: loading arx sdk failed:" + retCode);
+            }
+            Console.WriteLine("arx: init success: " + retVal);
+        }
+        static void SDKCallback(int eventType, int eventValue, System.String eventArg, System.IntPtr context) 
+        {
+            if(eventType == LogitechArx.LOGI_ARX_EVENT_FOCUS_ACTIVE)
+            {
+                Console.WriteLine("arx: App active");
+                
+            }
+            if (eventType == LogitechArx.LOGI_ARX_EVENT_MOBILEDEVICE_ARRIVAL)
+            {
+                //Device connected
+                Console.WriteLine("arx: device connected");
+                LogitechArx.LogiArxAddFileAs("Resources\\index.html", "index.html");
+                LogitechArx.LogiArxSetIndex("index.html");
+            }
+            else if(eventType ==LogitechArx.LOGI_ARX_EVENT_MOBILEDEVICE_REMOVAL)
+            {
+                //Device disconnected   
+                Console.WriteLine("arx: device disconnected");
+            } 
+            else if (eventType == LogitechArx.LOGI_ARX_EVENT_TAP_ON_TAG)
+            {
+                if (eventArg == "refreshButton")
+                {
+                    Console.WriteLine("arx: " + eventArg + " tapped");
+                    LogitechArx.LogiArxAddFileAs("Resources\\index.html", "index.html");
+                    LogitechArx.LogiArxSetIndex("index.html");
+                }
+            }
+        }
+
+        private static void UpdateArx(DiscordRpcClient client, string serverName, string channelName, List<ulong> speakers, Dictionary<ulong, string> connectedUsers)
+        {
+            string _serverName = serverName ?? "No Server";
+            string _channelName = channelName ?? "No Channel";
+
+            // put all the speakers in a string. create a copy of the list first
+            string _speakers = "";
+            foreach (ulong s in speakers.ToList())
+            {
+                string user;
+                if (connectedUsers.TryGetValue(s, out user))
+                {
+                    _speakers += user + " ";
+                }
+            }
+            if (_speakers.Length != 0)
+            {
+                _speakers = "🎤" + _speakers;
+            }
+
+            LogitechArx.LogiArxSetTagContentById("currentServer", _serverName);
+            LogitechArx.LogiArxSetTagContentById("currentChannel", _channelName);
+            LogitechArx.LogiArxSetTagContentById("currentSpeakers", _speakers);
+
         }
 
         private static void UpdateLCD(DiscordRpcClient client, string serverName, string channelName, List<ulong> speakers, Dictionary<ulong, string> connectedUsers)
