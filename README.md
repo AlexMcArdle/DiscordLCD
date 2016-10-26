@@ -1,7 +1,7 @@
 # DiscordLCD
 Logitech LCD plugin for Discord
 
-![DiscordLCD](https://cloud.githubusercontent.com/assets/941476/19297624/6de5605e-900c-11e6-869c-35257de3467b.jpg "DiscordLCD")
+![DiscordLCD](https://cloud.githubusercontent.com/assets/941476/19740219/79c13fce-9b83-11e6-90c8-e3940bb48abc.png "DiscordLCD")
 
 Currently supports the monochrome LCDs (can't test RGB)
 - G510 / G510s - 160x43 Monochrome
