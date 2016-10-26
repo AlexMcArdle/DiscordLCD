@@ -265,7 +265,7 @@ namespace DiscordLCD
             }
             if (_speakers.Length != 0)
             {
-                _speakers = "🎤" + _speakers;
+                _speakers = "🎤 " + _speakers;
             }
 
             LogitechArx.LogiArxSetTagContentById("currentServer", _serverName);
