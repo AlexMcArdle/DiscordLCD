@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="DiscordLCD.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="clientID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">229746606205829120</Value>
+    </Setting>
+    <Setting Name="clientSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AKt3xJ2-RCQ2Msgxicte1ER1QFXR-RT9</Value>
+    </Setting>
+    <Setting Name="bearerToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="channelID" Type="System.UInt64" Scope="User">
+      <Value Profile="(Default)">230144259603431424</Value>
+    </Setting>
+    <Setting Name="serverID" Type="System.UInt64" Scope="User">
+      <Value Profile="(Default)">140540231567933440</Value>
+    </Setting>
+    <Setting Name="reset" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
